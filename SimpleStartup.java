@@ -30,12 +30,26 @@ public class SimpleStartup {
         System.out.println("Try to sink them all in the fewest number of guesses.");
         //3- Printa breves instruções para o usuário
 
+        ArrayList<String> posicoesUsadas = new ArrayList<>();
+
         for (Startup startup : startups) { // 4- Repete isso com cada Startup na lista
-            ArrayList<String> newLocation = helper.placeStartup(3);
+            ArrayList<String> newLocation;// = helper.placeStartup(3);
+            do {
+                newLocation = helper.placeStartup(3);
+            } while (!posicoesValidas(newLocation, posicoesUsadas)); // Verifica se são válidas
+            posicoesUsadas.addAll(newLocation);
             // 5- Solicita ao auxiliar um local para a Startup (um ArrayList de Strings)
             startup.setLocationCells(newLocation);
             // 6- Chama o método setter nesta Startup para fornecer o local que acabou de ser obtido do auxiliar.
         }
+    }
+
+    private boolean posicoesValidas(ArrayList<String> novaPosicao, ArrayList<String> usadas) {
+        for (String posicao : novaPosicao)
+            if (usadas.contains(posicao)) {
+                return false; // Se existe a posição, retorna false
+            }
+        return true;
     }
 
     public void startPlaying() {
@@ -48,8 +62,16 @@ public class SimpleStartup {
         finalizandoJogo(); //10- Chama nosso método finishGame() ou finalizandoJogo()
     } // Fecha o método startPlaying
 
+    private ArrayList<String> palpitesFeitos = new ArrayList<>(); // Antes do método que vai receber
+
     public String checkUserGuess(String palpites) { // Aqui que o palpite bugava
+        if (palpitesFeitos.contains(palpites)) {
+            System.out.println("Você já tentou essa posição! Escolha outra");
+            return "Repetido";
+        }
+        palpitesFeitos.add(palpites);
         numDePalpites++; //11- Incrementa o número de palpites que o usuário fez.
+
         String resultado = "errou"; //12- Assume que é um 'erro' a menos que seja dito o contrário
 
         for (Startup startupParaTest : startups) { //13- Repete isso com todas as Startups na lista
