@@ -1,8 +1,10 @@
+package SimpleStartup;
+
 import java.util.ArrayList;
 
 public class SimpleStartupTestDrive {
   public static void main(String[] args) {
-    SimpleStartup.SimpleStartup game = new SimpleStartup.SimpleStartup();
+    SimpleStartup game = new SimpleStartup();
     game.setUpGame(); //20- Solicita ao objeto 'game' para configurar o jogo
     game.startPlaying(); //21- Solicita ao objeto game para iniciar o loop principal do jogo (permanece solicitando a entrada do usuário e verificando o palpite)
 
